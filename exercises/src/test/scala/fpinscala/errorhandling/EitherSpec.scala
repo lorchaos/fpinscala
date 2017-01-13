@@ -41,9 +41,5 @@ class EitherSpec extends WordSpec with Matchers {
       l.map2(v)(fn) should be (l)
       r.map2(v)(fn) should be (Right("7:4"))
     }
-
-
   }
-
-
 }
