@@ -42,4 +42,24 @@ class EitherSpec extends WordSpec with Matchers {
       r.map2(v)(fn) should be (Right("7:4"))
     }
   }
+
+  "Exercise 4.7 - Sequence" when {
+
+    "Right" in {
+
+      val input = List(Right("a"), Right("b"))
+
+      Either.sequence(input) should be (Right(List("a", "b")))
+    }
+
+    "Left" in {
+
+      val input = List(Right("a"), Left("error"))
+      Either.sequence(input) should be (Left("error"))
+    }
+
+    "Empty" in {
+      Either.sequence(List()) should be (Right(List()))
+    }
+  }
 }
