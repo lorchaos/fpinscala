@@ -4,6 +4,11 @@ import org.scalatest.{Matchers, WordSpec}
 
 class EitherSpec extends WordSpec with Matchers {
 
+  def Try[E >: Exception, A](a: => A): Either[E, A] =
+    try Right(a)
+    catch { case e: Exception => Left(e) }
+
+
   "Exercise 4.6" when {
 
     val l : Either[String, Int] = Left("Bob")
@@ -60,6 +65,28 @@ class EitherSpec extends WordSpec with Matchers {
 
     "Empty" in {
       Either.sequence(List()) should be (Right(List()))
+    }
+  }
+
+  "Exercise 4.7 - Transpose" when {
+
+
+    def toInt(s : String) = Try { s.toInt }
+
+    "Right" in {
+
+      val input = List("1", "2", "3")
+      Either.traverse(input)(toInt) should be(Right(List(1, 2, 3)))
+    }
+
+    "Left" in {
+      val input = List("1", "Nan", "3")
+      Either.traverse(input)(toInt) shouldBe a [Left[Exception]]
+    }
+
+    "Empty" in {
+      val input = List()
+      Either.traverse(input)(toInt) should be(Right(List()))
     }
   }
 }

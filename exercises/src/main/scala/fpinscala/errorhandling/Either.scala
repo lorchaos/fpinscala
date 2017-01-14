@@ -29,7 +29,20 @@ case class Left[+E](get: E) extends Either[E,Nothing]
 case class Right[+A](get: A) extends Either[Nothing,A]
 
 object Either {
-  def traverse[E,A,B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] = sys.error("todo")
+  def traverse[E,A,B](es: List[A])(f: A => Either[E, B]): Either[E, List[B]] = {
+
+    @annotation.tailrec
+    def loop(values: List[A], acc: List[B]) : Either[E, List[B]] = values match {
+
+      case Nil => Right(acc)
+      case x :: xs => f(x) match {
+        case Right(a) => loop(xs, acc :+ a)
+        case Left(e) => Left(e)
+      }
+    }
+
+    loop(es, List())
+  }
 
   def sequence[E,A](es: List[Either[E,A]]): Either[E,List[A]] = {
 
