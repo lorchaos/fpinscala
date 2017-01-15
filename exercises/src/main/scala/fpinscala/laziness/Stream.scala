@@ -17,7 +17,12 @@ trait Stream[+A] {
     case Empty => None
     case Cons(h, t) => if (f(h())) Some(h()) else t().find(f)
   }
-  def take(n: Int): Stream[A] = sys.error("todo")
+
+  def take(n: Int): Stream[A] = (n, this) match {
+    case (0, _ ) => empty
+    case (_, Empty) => empty
+    case (l, Cons(h, t)) => Cons(h, () => t().take(l - 1))
+  }
 
   def drop(n: Int): Stream[A] = sys.error("todo")
 
@@ -31,9 +36,24 @@ trait Stream[+A] {
   // writing your own function signatures.
 
   def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
+
+  def toList : List[A] = {
+
+    @annotation.tailrec
+    def loop(v: Stream[A], acc: List[A]) : List[A] = v match {
+      case Cons(h, t) => loop(t(), acc :+ h())
+      case Empty => acc
+    }
+    loop(this, List[A]())
+  }
 }
-case object Empty extends Stream[Nothing]
-case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
+case object Empty extends Stream[Nothing] {
+
+
+}
+case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A] {
+
+}
 
 object Stream {
   def cons[A](hd: => A, tl: => Stream[A]): Stream[A] = {
