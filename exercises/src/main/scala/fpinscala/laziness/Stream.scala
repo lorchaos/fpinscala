@@ -24,7 +24,11 @@ trait Stream[+A] {
     case (l, Cons(h, t)) => Cons(h, () => t().take(l - 1))
   }
 
-  def drop(n: Int): Stream[A] = sys.error("todo")
+  def drop(n: Int): Stream[A] = (n, this) match {
+    case (0, t) => t
+    case (_, Empty) => empty
+    case (l, Cons(h, t)) => t().drop(l - 1)
+  }
 
   def takeWhile(p: A => Boolean): Stream[A] = sys.error("todo")
 

@@ -38,12 +38,38 @@ class StreamSpec extends WordSpec with Matchers {
     }
 
     "Empty stream" in {
-        val take = Stream.empty.take(2)
+      val take = Stream.empty.take(2)
 
-        // find out about stream comparison
-        take.toList should be(List())
+      // find out about stream comparison
+      take.toList should be(List())
+    }
+  }
+
+  "Exercise 5.2 - drop" when {
+
+    "Regular scenario" in {
+
+      val result = Stream("a", "b", "c").drop(2)
+
+      // find out about stream comparison
+      result.toList should be(List("c"))
     }
 
+    "Less items" in {
+
+      val result = Stream("a", "b", "c").drop(10)
+
+      // find out about stream comparison
+      result.toList should be(List())
+    }
+
+    "Empty stream" in {
+
+      val result = Stream().drop(2)
+
+      // find out about stream comparison
+      result.toList should be(List())
+    }
 
   }
 
