@@ -70,7 +70,42 @@ class StreamSpec extends WordSpec with Matchers {
       // find out about stream comparison
       result.toList should be(List())
     }
-
   }
 
+  "Exercise 5.3 - take while" when {
+
+    def predicate(n : Int) = n < 3
+
+    "Regular scenario" in {
+
+      val result = Stream(1, 2, 3 , 4 , 5).takeWhile(predicate)
+
+      // find out about stream comparison
+      result.toList should be(List(1, 2))
+    }
+
+    "Predicate never succeeds" in {
+
+      val result = Stream(10, 11, 12).takeWhile(predicate)
+
+      // find out about stream comparison
+      result.toList should be(List())
+    }
+
+    "Predicate never fails" in {
+
+      val result = Stream(1, 1, 1).takeWhile(predicate)
+
+      // find out about stream comparison
+      result.toList should be(List(1, 1, 1))
+    }
+
+    "Empty stream" in {
+
+      val result = Stream().takeWhile(predicate)
+
+      // find out about stream comparison
+      result.toList should be(List())
+    }
+  }
 }
