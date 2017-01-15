@@ -108,4 +108,25 @@ class StreamSpec extends WordSpec with Matchers {
       result.toList should be(List())
     }
   }
+
+  "Exercise 5.4 - forAll" when {
+
+    def predicate(n : Int) = n < 3
+
+    "Predicate fails" in {
+      Stream(1, 2, 3 , 4, 5).forAll(predicate) shouldBe false
+    }
+
+    "Predicate never fails" in {
+      Stream(1, 2).forAll(predicate) shouldBe true
+    }
+
+    "Predicate never works" in {
+      Stream(7, 8).forAll(predicate) shouldBe false
+    }
+
+    "Empty stream" in {
+      Stream().forAll(predicate) shouldBe true
+    }
+  }
 }
