@@ -129,4 +129,27 @@ class StreamSpec extends WordSpec with Matchers {
       Stream().forAll(predicate) shouldBe true
     }
   }
+
+  "Exercise 5.5 - takeWhile with foldRight" when {
+
+    def predicate(n : Int) = { val r = n < 3;  println("eeev" + n + ":" + r); r }
+
+    "Regular case" in {
+
+      Stream(1, 2, 3, 4, 5)
+        .takeWhile2(predicate)
+        .toList should be(List(1, 2))
+    }
+  }
+
+  "Exercise 5.6 - headOption" when {
+
+    "Regular case" in {
+      Stream(1, 2, 3).headOption should be(Some(1))
+    }
+
+    "Empty" in {
+      Stream().headOption should be(None)
+    }
+  }
 }
