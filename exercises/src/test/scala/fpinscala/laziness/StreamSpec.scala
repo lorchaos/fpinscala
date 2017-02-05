@@ -179,4 +179,15 @@ class StreamSpec extends WordSpec with Matchers {
         .toList should be(List(1, 2, 3, 4, 5, 6))
     }
   }
+
+  "Exercise 5.8 - Function constant" when {
+
+    "Numbers" in {
+      Stream.constant(1).take(3).toList should be(List(1,1,1))
+    }
+
+    "Chars" in {
+      Stream.constant('a').take(4).toList should be(List('a', 'a', 'a', 'a'))
+    }
+  }
 }
