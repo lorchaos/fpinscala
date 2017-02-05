@@ -197,4 +197,27 @@ class StreamSpec extends WordSpec with Matchers {
       Stream.from(3).take(3).toList should be(List(3, 4, 5))
     }
   }
+
+  "Exercise 5.10 - fibonacci" when {
+
+    // TODO
+
+  }
+
+  "Exercise 5.11 - unfold" when {
+
+    "Basic string decomposition" in {
+
+      val s = Stream.unfold("abobo") {
+        r =>
+          r.length match {
+            case 1 => Some(r.charAt(0).toInt, "")
+            case 0 => None
+            case x => Some(r.charAt(0).toInt, r.substring(1))
+          }
+      }
+
+      s.toList should be(List(97, 98, 111, 98, 111))
+    }
+  }
 }
