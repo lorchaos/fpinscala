@@ -190,4 +190,11 @@ class StreamSpec extends WordSpec with Matchers {
       Stream.constant('a').take(4).toList should be(List('a', 'a', 'a', 'a'))
     }
   }
+
+  "Exercise 5.9 - from" when {
+
+    "S" in {
+      Stream.from(3).take(3).toList should be(List(3, 4, 5))
+    }
+  }
 }

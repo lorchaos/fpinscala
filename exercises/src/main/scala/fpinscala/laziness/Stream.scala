@@ -98,7 +98,8 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
 
   val ones: Stream[Int] = Stream.cons(1, ones)
-  def from(n: Int): Stream[Int] = sys.error("todo")
+
+  def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
 
   def constant[A](a: A) : Stream[A] = Stream.cons(a, constant(a))
 
