@@ -220,4 +220,48 @@ class StreamSpec extends WordSpec with Matchers {
       s.toList should be(List(97, 98, 111, 98, 111))
     }
   }
+
+  "Exercise 5.12 - corecursion" when {
+
+    "From" in {
+      Stream.from_u(3).take(3).toList should be(List(3, 4, 5))
+    }
+
+    "Constant" in {
+      Stream.constant_u(2).take(3).toList should be(List(2, 2, 2))
+    }
+
+    "Ones" in {
+      Stream.ones_u.take(3).toList should be(List(1, 1, 1))
+    }
+
+    "Fib" in {
+
+      // TODO
+    }
+  }
+
+  "Exercise 5.13 - " when {
+    /**
+      * Use unfold to implement map, take, takeWhile, zipWith
+      * (as in chapter 3), and zipAll.
+      * The zipAll function should continue the traversal as long as
+      * either stream has more elements—it uses Option to indicate
+      * whether each stream has been exhausted.
+        def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])]
+      */
+
+
+    "Map" in {
+      Stream(97, 98, 99).map_u{ s => s.toChar }.toList should be(List('a', 'b', 'c'))
+    }
+
+    "Take" in {
+      Stream(97, 98, 99).take_u(2).toList should be(List('a', 'b'))
+    }
+
+    "TakeWhile" in {
+      Stream(97, 98, 2, 1).takeWhile_u(n => n > 5).toList should be(List('a', 'b'))
+    }
+  }
 }
