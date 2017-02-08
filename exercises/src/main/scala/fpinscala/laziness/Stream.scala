@@ -99,6 +99,28 @@ trait Stream[+A] {
     }
   }
 
+  def zipWith[B,C](b: Stream[B])(f: ((A, B) => C)) : Stream[C] = {
+
+    unfold((this, b)){ x => x match {
+        case (Cons(ah, at), Cons(bh, bt)) => Some(f(ah(), bh()), (at(), bt()))
+        case (Empty, _) | (_, Empty) => None
+      }
+    }
+  }
+
+  def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])] = {
+
+    unfold((this, s2)){ x => x match {
+      case (Cons(ah, at), Cons(bh, bt)) => Some((Some(ah()), Some(bh())), (at(), bt()))
+      case (Empty, Cons(bh, bt))  => Some((None, Some(bh())), (empty, bt()))
+      case (Cons(ah, at), Empty)  => Some((Some(ah()), None), (at(), empty))
+      case (Empty, Empty) => None
+      }
+    }
+  }
+
+
+
 }
 case object Empty extends Stream[Nothing] {
 

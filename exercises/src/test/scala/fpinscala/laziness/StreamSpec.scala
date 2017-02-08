@@ -263,5 +263,56 @@ class StreamSpec extends WordSpec with Matchers {
     "TakeWhile" in {
       Stream(97, 98, 2, 1).takeWhile_u(n => n > 5).toList should be(List('a', 'b'))
     }
+
+    "ZipWith" in {
+
+      val s2 = Stream("a", "b", "c")
+
+      Stream(1, 2, 3).zipWith(s2){(a, b) => a + b}.toList should be(List("1a", "2b", "3c"))
+    }
+
+    "ZipWith with less elements - a" in {
+
+      val s2 = Stream("a")
+
+      Stream(1, 2, 3).zipWith(s2){(a, b) => a + b}.toList should be(List("1a"))
+    }
+
+    "ZipWith with less elements - b" in {
+
+      val s2 = Stream("a", "b", "c")
+
+      Stream(1).zipWith(s2){(a, b) => a + b}.toList should be(List("1a"))
+    }
+
+    "ZipAll with less elements - a" in {
+
+      val s2 = Stream("a", "b", "c")
+
+      Stream(1).zipAll(s2).toList should be(List(
+        (Some(1), Some("a")),
+        (None, Some("b")),
+        (None, Some("c"))))
+    }
+
+    "ZipAll with less elements - b" in {
+
+      val s2 = Stream("a")
+
+      Stream(1, 2, 3).zipAll(s2).toList should be(List(
+        (Some(1), Some("a")),
+        (Some(2), None),
+        (Some(3), None)))
+    }
+
+    "ZipAll with " in {
+
+      val s2 = Stream("a", "b", "c")
+
+      Stream(1, 2, 3).zipAll(s2).toList should be(List(
+        (Some(1), Some("a")),
+        (Some(2), Some("b")),
+        (Some(3), Some("c"))))
+    }
   }
 }
