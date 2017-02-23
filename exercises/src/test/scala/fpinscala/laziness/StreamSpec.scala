@@ -315,4 +315,20 @@ class StreamSpec extends WordSpec with Matchers {
         (Some(3), Some("c"))))
     }
   }
+
+
+  "Exercise 5.14 - startsWith" when {
+
+    "Positive" in {
+      Stream(1, 2, 3).startsWith(Stream(1, 2)) should be(true)
+    }
+
+    "False" in {
+      Stream(1, 2, 3).startsWith(Stream(5, 2)) should be(false)
+    }
+
+    "FailFast" in {
+      Stream.from(1).startsWith(Stream.from(100)) should be(false)
+    }
+  }
 }

@@ -64,7 +64,8 @@ trait Stream[+A] {
     foldRight(s)((a, acc) => cons(a, acc))
   }
 
-  def startsWith[B](s: Stream[B]): Boolean = sys.error("todo")
+  def startsWith[B](s2: Stream[B]): Boolean =
+    this.zipWith(s2) {(a, b) => a.equals(b)}.forAll(Predef.identity)
 
   def toList: List[A] = {
 
@@ -118,9 +119,6 @@ trait Stream[+A] {
       }
     }
   }
-
-
-
 }
 case object Empty extends Stream[Nothing] {
 
