@@ -74,11 +74,11 @@ class StreamSpec extends WordSpec with Matchers {
 
   "Exercise 5.3 - take while" when {
 
-    def predicate(n : Int) = n < 3
+    def predicate(n: Int) = n < 3
 
     "Regular scenario" in {
 
-      val result = Stream(1, 2, 3 , 4 , 5).takeWhile(predicate)
+      val result = Stream(1, 2, 3, 4, 5).takeWhile(predicate)
 
       // find out about stream comparison
       result.toList should be(List(1, 2))
@@ -111,10 +111,10 @@ class StreamSpec extends WordSpec with Matchers {
 
   "Exercise 5.4 - forAll" when {
 
-    def predicate(n : Int) = n < 3
+    def predicate(n: Int) = n < 3
 
     "Predicate fails" in {
-      Stream(1, 2, 3 , 4, 5).forAll(predicate) shouldBe false
+      Stream(1, 2, 3, 4, 5).forAll(predicate) shouldBe false
     }
 
     "Predicate never fails" in {
@@ -132,7 +132,7 @@ class StreamSpec extends WordSpec with Matchers {
 
   "Exercise 5.5 - takeWhile with foldRight" when {
 
-    def predicate(n : Int) = n < 3
+    def predicate(n: Int) = n < 3
 
     "Regular case" in {
 
@@ -175,7 +175,7 @@ class StreamSpec extends WordSpec with Matchers {
 
     "append" in {
       Stream(1, 2, 3)
-          .append(Stream(4, 5, 6))
+        .append(Stream(4, 5, 6))
         .toList should be(List(1, 2, 3, 4, 5, 6))
     }
   }
@@ -183,7 +183,7 @@ class StreamSpec extends WordSpec with Matchers {
   "Exercise 5.8 - Function constant" when {
 
     "Numbers" in {
-      Stream.constant(1).take(3).toList should be(List(1,1,1))
+      Stream.constant(1).take(3).toList should be(List(1, 1, 1))
     }
 
     "Chars" in {
@@ -248,12 +248,12 @@ class StreamSpec extends WordSpec with Matchers {
       * The zipAll function should continue the traversal as long as
       * either stream has more elements—it uses Option to indicate
       * whether each stream has been exhausted.
-        def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])]
+      * def zipAll[B](s2: Stream[B]): Stream[(Option[A],Option[B])]
       */
 
 
     "Map" in {
-      Stream(97, 98, 99).map_u{ s => s.toChar }.toList should be(List('a', 'b', 'c'))
+      Stream(97, 98, 99).map_u { s => s.toChar }.toList should be(List('a', 'b', 'c'))
     }
 
     "Take" in {
@@ -268,21 +268,21 @@ class StreamSpec extends WordSpec with Matchers {
 
       val s2 = Stream("a", "b", "c")
 
-      Stream(1, 2, 3).zipWith(s2){(a, b) => a + b}.toList should be(List("1a", "2b", "3c"))
+      Stream(1, 2, 3).zipWith(s2) { (a, b) => a + b }.toList should be(List("1a", "2b", "3c"))
     }
 
     "ZipWith with less elements - a" in {
 
       val s2 = Stream("a")
 
-      Stream(1, 2, 3).zipWith(s2){(a, b) => a + b}.toList should be(List("1a"))
+      Stream(1, 2, 3).zipWith(s2) { (a, b) => a + b }.toList should be(List("1a"))
     }
 
     "ZipWith with less elements - b" in {
 
       val s2 = Stream("a", "b", "c")
 
-      Stream(1).zipWith(s2){(a, b) => a + b}.toList should be(List("1a"))
+      Stream(1).zipWith(s2) { (a, b) => a + b }.toList should be(List("1a"))
     }
 
     "ZipAll with less elements - a" in {
@@ -329,6 +329,24 @@ class StreamSpec extends WordSpec with Matchers {
 
     "FailFast" in {
       Stream.from(1).startsWith(Stream.from(100)) should be(false)
+    }
+  }
+
+
+  "Exercise 5.15 - tails" when {
+
+    "Positive" in {
+      val expected = Stream(
+        List(1, 2, 3),
+        List(2, 3),
+        List(3),
+        List())
+
+      Stream(1, 2, 3)
+        .tails
+        .map(_.toList)
+        .zipAll(expected)
+        .forAll( r => r._1 == r._2 ) should be(true)
     }
   }
 }

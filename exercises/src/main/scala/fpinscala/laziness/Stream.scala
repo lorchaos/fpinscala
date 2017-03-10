@@ -3,6 +3,13 @@ package fpinscala.laziness
 import Stream._
 trait Stream[+A] {
 
+  def tails: Stream[Stream[A]] =
+    unfold(this){ x => x match {
+      case Cons(h, t) => Some((x, t()))
+      case Empty => None
+    }} append Stream(empty)
+
+
   def foldRight[B](z: => B)(f: (A, => B) => B): B = // The arrow `=>` in front of the argument type `B` means that the function `f` takes its second argument by name and may choose not to evaluate it.
     this match {
       case Cons(h, t) => f(h(), t().foldRight(z)(f)) // If `f` doesn't evaluate its second argument, the recursion never occurs.
