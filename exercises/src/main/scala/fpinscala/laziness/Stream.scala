@@ -3,6 +3,15 @@ package fpinscala.laziness
 import Stream._
 trait Stream[+A] {
 
+  def scanRight_unfold[B](i: B)(f: (A, => B) => B) : Stream[B] =
+    unfold(this){ x => x match {
+      case Empty => None
+      case Cons(h, t) => Some((x.foldRight(i)(f), t()))
+    }} append Stream(i)
+
+  def scanRight_tails[B](i: B)(f: (A, => B) => B) : Stream[B] =
+    this.tails.map(_.foldRight(i)(f))
+
   def tails: Stream[Stream[A]] =
     unfold(this){ x => x match {
       case Cons(h, t) => Some((x, t()))

@@ -335,7 +335,7 @@ class StreamSpec extends WordSpec with Matchers {
 
   "Exercise 5.15 - tails" when {
 
-    "Positive" in {
+    "Multiple values" in {
       val expected = Stream(
         List(1, 2, 3),
         List(2, 3),
@@ -347,6 +347,45 @@ class StreamSpec extends WordSpec with Matchers {
         .map(_.toList)
         .zipAll(expected)
         .forAll( r => r._1 == r._2 ) should be(true)
+    }
+
+    "Empty stream" in {
+
+      Empty
+        .tails
+        .map(_.toList)
+          .toList should be(List(List()))
+    }
+  }
+
+  "Exercise 5.16 - scan with unfold" when {
+
+    "Multiple values" in {
+      Stream(1, 2, 3).scanRight_unfold(0)(_ + _).toList should be(List(6, 5, 3, 0))
+    }
+
+    "Single value" in {
+      Stream(4).scanRight_unfold(7)(_ + _).toList should be(List(11, 7))
+    }
+
+    "Empty stream" in {
+      Empty.scanRight_unfold(7)((a, b) => b).toList should be(List(7))
+    }
+  }
+
+
+  "Exercise 5.16 - scan with tails" when {
+
+    "Multiple values" in {
+      Stream(1, 2, 3).scanRight_tails(0)(_ + _).toList should be(List(6, 5, 3, 0))
+    }
+
+    "Single value" in {
+      Stream(4).scanRight_tails(7)(_ + _).toList should be(List(11, 7))
+    }
+
+    "Empty stream" in {
+      Empty.scanRight_tails(7)((a, b) => b).toList should be(List(7))
     }
   }
 }
