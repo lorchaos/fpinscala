@@ -30,9 +30,15 @@ object RNG {
       (f(a), rng2)
     }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  def nonNegativeInt(rng: RNG): (Int, RNG) = rng.nextInt match {
+    case (Int.MinValue, r) => (Int.MaxValue, r) // as Int.MinValue can't be converted to Int
+    case (i, r) => (Math.abs(i), r)
+  }
 
-  def double(rng: RNG): (Double, RNG) = ???
+  def double(rng: RNG): (Double, RNG) = nonNegativeInt(rng) match {
+    case (i, r) if i == 0 || i == 1 => double(r) // tough luck, roll again :)
+    case (i, r) => (1 / i.toDouble, r)
+  }
 
   def intDouble(rng: RNG): ((Int,Double), RNG) = ???
 
