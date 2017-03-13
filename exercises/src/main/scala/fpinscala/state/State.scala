@@ -1,5 +1,7 @@
 package fpinscala.state
 
+import scala.collection.immutable.Stream.cons
+
 
 trait RNG {
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
@@ -40,13 +42,35 @@ object RNG {
     case (i, r) => (1 / i.toDouble, r)
   }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (i, r) = nonNegativeInt(rng)
+    val (d, r2) = double(r)
+    ((i, d), r2)
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val (d, r) = double(rng)
+    val (i, r2) = nonNegativeInt(r)
+    ((d, i), r2)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+    val (i, r) = double(rng)
+    val (i2, r2) = double(r)
+    val (i3, r3) = double(r2)
+    ((i, i2, i3), r3)
+  }
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) =
+    Stream.continually(1).take(count).foldRight((List() : List[Int], rng)) {
+      (i, b) => {
+        val (l, r) = b
+        val (ni, nr) = r.nextInt
+        (l :+ ni, nr)
+      }
+    }
+
 
   def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
 

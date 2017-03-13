@@ -2,6 +2,10 @@ package fpinscala.state
 
 import org.scalatest.{Matchers, WordSpec}
 
+import org.scalactic.Tolerance._
+import org.scalatest.Assertions._
+
+
 class StateSpec extends WordSpec with Matchers {
 
   case class Incremental(v : Int) extends RNG {
@@ -55,6 +59,43 @@ class StateSpec extends WordSpec with Matchers {
     "Negative" in {
       val (i, r) = RNG.double(Incremental(-600))
       i should be (1 / 600.0)
+    }
+  }
+
+  "Exercise 6.3 - intDouble" when {
+
+    "intDouble" in {
+
+      val ((i, d), r) = RNG.intDouble(Incremental(1))
+      i should be(1)
+      d should be(0.5)
+      r should be(Incremental(3))
+    }
+
+    "doubleInt" in {
+
+      val ((d, i), r) = RNG.doubleInt(Incremental(1))
+      d should be(0.5)
+      i should be(3)
+      r should be(Incremental(4))
+    }
+
+    "double3" in {
+
+      val ((i, i2, i3), r) = RNG.double3(Incremental(1))
+      i should be(0.5)
+      i2 should equal(0.33 +- 0.1)
+      i3 should be(0.25)
+    }
+  }
+
+  "Exercise 6.4 - ints" when {
+
+    "bla" in {
+      val (l, r) = RNG.ints(5)(Incremental(1))
+
+      l should be(List(1, 2, 3, 4, 5))
+      r should be(Incremental(6))
     }
   }
 }
