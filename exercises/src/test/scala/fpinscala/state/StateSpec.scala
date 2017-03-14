@@ -98,4 +98,27 @@ class StateSpec extends WordSpec with Matchers {
       r should be(Incremental(6))
     }
   }
+
+  "Exercise 6.5 - double implmeented with map" when {
+
+    "Basic" in {
+      val result = RNG.double_map(Incremental(2))
+      result._1 should be(1)
+    }
+
+    "Zero" in {
+      val (i, r) = RNG.double_map(Incremental(0))
+      i should be(0)
+    }
+
+    "Big number" in {
+      val (i, r) = RNG.double_map(Incremental(500))
+      i should be(250.0)
+    }
+
+    "Negative" in {
+      val (i, r) = RNG.double_map(Incremental(600))
+      i should be (300.0)
+    }
+  }
 }

@@ -42,6 +42,9 @@ object RNG {
     case (i, r) => (1 / i.toDouble, r)
   }
 
+  def double_map : Rand[Double] =
+    map(nonNegativeInt)(_ * 0.5)
+
   def intDouble(rng: RNG): ((Int,Double), RNG) = {
     val (i, r) = nonNegativeInt(rng)
     val (d, r2) = double(r)
