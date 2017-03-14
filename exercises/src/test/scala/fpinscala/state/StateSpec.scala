@@ -1,7 +1,7 @@
 package fpinscala.state
 
+import fpinscala.state.State.Rand
 import org.scalatest.{Matchers, WordSpec}
-
 import org.scalactic.Tolerance._
 import org.scalatest.Assertions._
 
@@ -120,5 +120,35 @@ class StateSpec extends WordSpec with Matchers {
       val (i, r) = RNG.double_map(Incremental(600))
       i should be (300.0)
     }
+  }
+
+  "Exercise 6.6 - map2" when {
+
+    "intDouble" in {
+
+      val (v, r) = RNG.intDouble_both(Incremental(1))
+      v._1 should be(1)
+      v._2 should be(1)
+      r should be(Incremental(3))
+    }
+
+    "doubleInt" in {
+
+      val (v, r) = RNG.doubleInt_both(Incremental(1))
+      v._1 should be(0.5)
+      v._2 should be(2)
+      r should be(Incremental(3))
+    }
+  }
+
+  "Exercise 6.7 - sequence" when {
+
+    "list" in {
+
+      val l = RNG.ints_seq(4)(Incremental(1))
+      l._1 should be(List(1, 2, 3, 4))
+      l._2 should be(Incremental(5))
+    }
+
   }
 }
