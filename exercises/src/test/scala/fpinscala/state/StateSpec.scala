@@ -164,4 +164,24 @@ class StateSpec extends WordSpec with Matchers {
     }
 
   }
+
+  "Exercise 6.9 - maps implemented in terms of flatmap " when {
+
+    "map" in {
+
+      val fun = RNG.map_f(RNG.nonNegativeInt) { i => "Hello: " + i }
+
+      val v = fun(Incremental(5))
+      v._1 should be("Hello: 5")
+    }
+
+
+    "map2" in {
+
+      val fun = RNG.map2_f(RNG.nonNegativeInt, RNG.nonNegativeInt) { (a, b) => List(a, b) }
+      val v = fun(Incremental(2))
+      v._1 should be(List(2, 3))
+      v._2 should be (Incremental(4))
+    }
+  }
 }

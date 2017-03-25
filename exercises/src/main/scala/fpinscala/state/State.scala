@@ -115,6 +115,11 @@ object RNG {
 
   def nonNegativeLessThan(n: Int): Rand[Int] =
     flatMap(nonNegativeInt){ i => unit( i % n) }
+
+  def map_f[A, B](s: Rand[A])(f: A => B): Rand[B] = flatMap(s) { v => unit(f(v)) }
+
+  def map2_f[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    flatMap(ra) { a => flatMap(rb) { b => unit(f(a, b)) }}
 }
 
 case class State[S,+A](run: S => (A, S)) {
