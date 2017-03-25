@@ -149,6 +149,19 @@ class StateSpec extends WordSpec with Matchers {
       l._1 should be(List(1, 2, 3, 4))
       l._2 should be(Incremental(5))
     }
+  }
+
+  "Exercise 6.8 - flatmap " when {
+
+    "Regular case" in {
+      val l = RNG.nonNegativeLessThan(5)(Incremental(8))
+      l._1 should be(3)
+    }
+
+    "Non" in {
+      val l = RNG.nonNegativeLessThan(5)(Incremental(5))
+      l._1 should be(0)
+    }
 
   }
 }
